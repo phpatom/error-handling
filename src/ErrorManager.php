@@ -10,8 +10,8 @@ use Atom\DI\Exceptions\NotFoundException;
 use Atom\DI\Exceptions\StorageNotFoundException;
 use Atom\ErrorHandling\Contracts\ErrorHandlerContract;
 use Atom\Web\WebApp;
-use Exception;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class ErrorManager
 {
@@ -39,15 +39,15 @@ class ErrorManager
 
     /**
      * @param ServerRequestInterface $request
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return void
      * @throws CircularDependencyException
      * @throws ContainerException
      * @throws NotFoundException
      * @throws StorageNotFoundException
-     * @throws Exception
+     * @throws Throwable
      */
-    public function handle(ServerRequestInterface $request, Exception $exception)
+    public function handle(ServerRequestInterface $request, Throwable $exception)
     {
         $response = null;
         try {
@@ -61,7 +61,7 @@ class ErrorManager
                     break;
                 }
             }
-        } catch (Exception $err) {
+        } catch (Throwable $err) {
             $this->handle($request, $err);
         }
         if (!is_null($response)) {
