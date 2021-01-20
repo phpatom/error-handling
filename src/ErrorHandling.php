@@ -3,13 +3,14 @@
 
 namespace Atom\ErrorHandling;
 
-use Atom\App\App;
-use Atom\App\Contracts\ServiceProviderContract;
+use Atom\Kernel\Contracts\ServiceProviderContract;
 use Atom\DI\Exceptions\CircularDependencyException;
 use Atom\DI\Exceptions\ContainerException;
 use Atom\DI\Exceptions\NotFoundException;
 use Atom\DI\Exceptions\StorageNotFoundException;
 use Atom\Event\Exceptions\ListenerAlreadyAttachedToEvent;
+use Atom\Kernel\Kernel;
+use Atom\Web\Application;
 use Atom\Web\Events\AppFailed;
 use Atom\Web\Events\ServiceProviderFailed;
 use Atom\Web\Exceptions\RequestHandlerException;
@@ -18,7 +19,6 @@ use Atom\ErrorHandling\Contracts\HttpErrorRendererContract;
 use Atom\ErrorHandling\Handlers\DebugErrorHandler;
 use Atom\ErrorHandling\Handlers\ErrorHandler;
 use Atom\ErrorHandling\Handlers\HttpErrorHandler;
-use Atom\Web\WebApp;
 use InvalidArgumentException;
 
 class ErrorHandling implements ServiceProviderContract
@@ -44,17 +44,17 @@ class ErrorHandling implements ServiceProviderContract
     }
 
     /**
-     * @param App $app
+     * @param Kernel $app
      * @throws CircularDependencyException
      * @throws ContainerException
-     * @throws NotFoundException
-     * @throws StorageNotFoundException
      * @throws ListenerAlreadyAttachedToEvent
+     * @throws NotFoundException
      * @throws RequestHandlerException
+     * @throws StorageNotFoundException
      */
-    public function register(App $app)
+    public function register(Kernel $app)
     {
-        if (!($app instanceof WebApp)) {
+        if (!($app instanceof Application)) {
             throw new InvalidArgumentException("Error handling can only be used with Web App");
         }
         $errorManager = new ErrorManager($app, $this->handlers);

@@ -12,20 +12,20 @@ use Atom\ErrorHandling\Contracts\HttpErrorRendererContract;
 use Atom\ErrorHandling\DefaultHttpErrorRenderer;
 use Atom\ErrorHandling\Exceptions\HttpAbortException;
 use Atom\ErrorHandling\Exceptions\HttpResponseException;
-use Atom\Web\WebApp;
+use Atom\Web\Application;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class HttpErrorHandler implements ErrorHandlerContract
 {
 
-    public function support(WebApp $app, ServerRequestInterface $request, $error): bool
+    public function support(Application $app, ServerRequestInterface $request, $error): bool
     {
         return ($error instanceof HttpAbortException) || ($error instanceof HttpResponseException);
     }
 
     /**
-     * @param WebApp $app
+     * @param Application $app
      * @param ServerRequestInterface $request
      * @param $error
      * @return ResponseInterface|null
@@ -35,7 +35,7 @@ class HttpErrorHandler implements ErrorHandlerContract
      * @throws NotFoundException
      * @throws StorageNotFoundException
      */
-    public function handle(WebApp $app, ServerRequestInterface $request, $error): ?ResponseInterface
+    public function handle(Application $app, ServerRequestInterface $request, $error): ?ResponseInterface
     {
         if ($error instanceof HttpAbortException) {
             $this->handleAbortException($app, $request, $error);
@@ -50,7 +50,7 @@ class HttpErrorHandler implements ErrorHandlerContract
     }
 
     /**
-     * @param WebApp $app
+     * @param Application $app
      * @param ServerRequestInterface $request
      * @param HttpAbortException $error
      * @throws HttpResponseException
@@ -59,7 +59,7 @@ class HttpErrorHandler implements ErrorHandlerContract
      * @throws ContainerException
      * @throws NotFoundException
      */
-    private function handleAbortException(WebApp $app, ServerRequestInterface $request, HttpAbortException $error)
+    private function handleAbortException(Application $app, ServerRequestInterface $request, HttpAbortException $error)
     {
         if ($app->container()->has(HttpErrorRendererContract::class)) {
             /**

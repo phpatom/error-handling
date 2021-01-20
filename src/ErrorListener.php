@@ -11,6 +11,7 @@ use Atom\Event\AbstractEventListener;
 use Atom\Web\Events\AppFailed;
 use Atom\Web\Events\ServiceProviderFailed;
 use Atom\Web\Request;
+use Throwable;
 
 class ErrorListener extends AbstractEventListener
 {
@@ -29,7 +30,7 @@ class ErrorListener extends AbstractEventListener
      * @throws CircularDependencyException
      * @throws ContainerException
      * @throws NotFoundException
-     * @throws StorageNotFoundException
+     * @throws StorageNotFoundException|Throwable
      */
     public function on($event): void
     {

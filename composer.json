@@ -3,7 +3,8 @@
   "description": "Error handling for PHPAtom web App",
   "type": "library",
   "require": {
-    "phpatom/web": "^0.1.1",
+    "php": "^7.3",
+    "phpatom/web": "^0.1.0",
     "filp/whoops": "^2.9"
   },
   "autoload": {

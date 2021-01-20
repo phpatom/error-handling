@@ -6,7 +6,7 @@ namespace Atom\ErrorHandling\Handlers;
 use Atom\ErrorHandling\Contracts\ErrorHandlerContract;
 use Atom\Web\Request;
 use Atom\Web\Response;
-use Atom\Web\WebApp;
+use Atom\Web\Application;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Whoops\Handler\JsonResponseHandler;
@@ -18,12 +18,12 @@ use Whoops\Util\Misc;
 class DebugErrorHandler implements ErrorHandlerContract
 {
 
-    public function support(WebApp $app, ServerRequestInterface $request, $error): bool
+    public function support(Application $app, ServerRequestInterface $request, $error): bool
     {
         return $app->env()->isDev() || $app->env()->get("APP_DEBUG", false);
     }
 
-    public function handle(WebApp $app, ServerRequestInterface $request, $error): ?ResponseInterface
+    public function handle(Application $app, ServerRequestInterface $request, $error): ?ResponseInterface
     {
         $request = Request::convert($request);
         $whoops = new Run;

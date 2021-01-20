@@ -8,7 +8,7 @@ use Atom\ErrorHandling\Exceptions\HttpAbortException;
 use Atom\ErrorHandling\Exceptions\HttpResponseException;
 use Atom\Routing\Exceptions\MethodNotAllowedException;
 use Atom\Routing\Exceptions\RouteNotFoundException;
-use Atom\Web\WebApp;
+use Atom\Web\Application;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
@@ -36,7 +36,7 @@ class ErrorHandler implements ErrorHandlerContract
         }
     }
 
-    public function support(WebApp $app, ServerRequestInterface $request, $error): bool
+    public function support(Application $app, ServerRequestInterface $request, $error): bool
     {
         return ($this->supportError($error) || $this->hasDefault()) &&
             !($error instanceof HttpAbortException) &&
@@ -83,13 +83,13 @@ class ErrorHandler implements ErrorHandlerContract
     }
 
     /**
-     * @param WebApp $app
+     * @param Application $app
      * @param ServerRequestInterface $request
      * @param $error
      * @return ResponseInterface|null
      * @throws HttpAbortException
      */
-    public function handle(WebApp $app, ServerRequestInterface $request, $error): ?ResponseInterface
+    public function handle(Application $app, ServerRequestInterface $request, $error): ?ResponseInterface
     {
         if ($this->supportError($error)) {
             $data = $this->map[get_class($error)];

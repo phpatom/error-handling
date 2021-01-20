@@ -7,7 +7,7 @@ use Atom\ErrorHandling\Contracts\HttpErrorRendererContract;
 use Atom\ErrorHandling\Exceptions\HttpAbortException;
 use Atom\Web\Request;
 use Atom\Web\Response;
-use Atom\Web\WebApp;
+use Atom\Web\Application;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -87,7 +87,7 @@ class DefaultHttpErrorRenderer implements HttpErrorRendererContract
     ];
 
     public function render(
-        WebApp $app,
+        Application $app,
         ServerRequestInterface $request,
         HttpAbortException $exception
     ): ResponseInterface {

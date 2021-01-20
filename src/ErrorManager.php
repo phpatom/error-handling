@@ -3,13 +3,12 @@
 
 namespace Atom\ErrorHandling;
 
-use Atom\App\App;
 use Atom\DI\Exceptions\CircularDependencyException;
 use Atom\DI\Exceptions\ContainerException;
 use Atom\DI\Exceptions\NotFoundException;
 use Atom\DI\Exceptions\StorageNotFoundException;
 use Atom\ErrorHandling\Contracts\ErrorHandlerContract;
-use Atom\Web\WebApp;
+use Atom\Web\Application;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
@@ -20,11 +19,11 @@ class ErrorManager
      */
     private $handlers;
     /**
-     * @var App
+     * @var Application
      */
     private $app;
 
-    public function __construct(WebApp $app, $handlers = [])
+    public function __construct(Application $app, $handlers = [])
     {
         foreach ($handlers as $handler) {
             $this->addHandler($handler);
@@ -65,7 +64,8 @@ class ErrorManager
             $this->handle($request, $err);
         }
         if (!is_null($response)) {
-            return $this->app->requestHandler()->emit($response);
+            $this->app->requestHandler()->emit($response);
+            return;
         }
         throw $exception;
     }
